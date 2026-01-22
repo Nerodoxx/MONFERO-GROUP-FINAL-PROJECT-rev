@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafe Arellano</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-brown: #6F4E37;
+            --light-brown: #A67B5B;
+            --cream: #F5E9D9;
+            --dark-brown: #3E2723;
+            --accent-green: #2E7D32;
+            --white: #FFFFFF;
+            --gray: #f8f8f8;
+        }
+
+        body {
+            background-color: var(--cream);
+            color: var(--dark-brown);
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--primary-brown);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--light-brown);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+
+        }
+
+        nav a:hover {
+            color: var(--light-brown);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-actions button {
+            background-color: var(--light-brown);
+            color: var(--white);
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+
+        .user-actions button:hover {
+            background-color: var(--dark-brown);
+        }
+
+        /* Page Content */
+        .page-content {
+            flex: 1;
+            display: none;
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .active-page {
+            display: block;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+
+        .login-box {
+            background-color: var(--white);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .login-box h2 {
+            color: var(--primary-brown);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark-brown);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-brown);
+            outline: none;
+        }
+
+        .login-btn {
+            background-color: var(--primary-brown);
+            color: var(--white);
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .login-btn:hover {
+            background-color: var(--dark-brown);
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #666;
+        }
+
+        .login-footer a {
+            color: var(--primary-brown);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .login-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Home Page Styles */
+        .hero-section {
+            text-align: center;
+            padding: 3rem 1rem;
+            background: linear-gradient(rgba(111, 78, 55, 0.9), rgba(111, 78, 55, 0.8)), url('https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80');
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            color: var(--white);
+            margin-bottom: 3rem;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        .btn-primary {
+            background-color: var(--light-brown);
+            color: var(--white);
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-brown);
+        }
+
+        .featured-section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            color: var(--primary-brown);
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--light-brown);
+            margin: 0.5rem auto;
+        }
+
+        .coffee-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .coffee-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .coffee-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .coffee-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .coffee-info {
+            padding: 1.5rem;
+        }
+
+        .coffee-info h3 {
+            color: var(--primary-brown);
+            margin-bottom: 0.5rem;
+        }
+
+        .coffee-info p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .price {
+            color: var(--accent-green);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .about-section {
+            background-color: var(--white);
+            padding: 3rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 3rem;
+        }
+
+        .about-section h2 {
+            color: var(--primary-brown);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: var(--dark-brown);
+            color: var(--white);
+            padding: 2rem;
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icons a {
+            color: var(--white);
+            font-size: 1.5rem;
+            transition: color 0.3s;
+        }
+
+        .social-icons a:hover {
+            color: var(--light-brown);
+        }
+
+        .copyright {
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            nav ul {
+                gap: 1rem;
+            }
+
+            .hero-section h1 {
+                font-size: 2.2rem;
+            }
+
+            .about-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-box {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* User Profile Display */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .user-profile span {
+            font-weight: 600;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem 1.5rem;
+            border-radius: 5px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .notification.success {
+            background-color: var(--accent-green);
+        }
+
+        .notification.error {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-coffee"></i>
+                <span>Cafe Arellano</span>
+            </div>
+            
+            <nav>
+                <ul>
+                    <li><a href="#" id="nav-home">Home</a></li>
+                    <li><a href="#" id="nav-menu">Menu</a></li>
+                    <li><a href="#" id="nav-about">About</a></li>
+                    <li><a href="#" id="nav-contact">Contact</a></li>
+                </ul>
+            </nav>
+            
+            <div class="user-actions">
+                <div class="user-profile" id="user-profile" style="display: none;">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="username-display"></span>
+                </div>
+                <button id="login-logout-btn">log in</button>
+            </div>
+        </header>
+
+        <!-- Login Page -->
+        <section id="login-page" class="page-content active-page">
+            <div class="login-container">
+                <div class="login-box">
+                    <h2>Welcome to Cafe Arellano</h2>
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                        </div>
+                        
+                        <button type="submit" class="login-btn">Log In</button>
+                    </form>
+                    
+                    <div class="login-footer">
+                        <p>Don't have an account? <a href="#" id="register-link">Register here</a></p>
+                        <p>Or use our demo account: email: cafearellano@gmail.com | password: peta123</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Home Page -->
+        <section id="home-page" class="page-content">
+            <!-- Hero Section -->
+            <div class="hero-section">
+                <h1>Experience the Perfect Cup</h1>
+                <p>At Cafe Arellano, we source the finest beans from around the world and craft each cup with passion and precision. Join us for an unforgettable coffee experience.</p>
+                <a href="#" class="btn-primary" id="order-now-btn">Order Now</a>
+            </div>
+
+            <!-- Featured Coffees -->
+            <div class="featured-section">
+                <h2 class="section-title">Our Signature Coffees</h2>
+                <div class="coffee-grid">
+                    <div class="coffee-card">
+                        <img src="https://images.unsplash.com/photo-1511537190424-bbbab87ac5eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Espresso">
+                        <div class="coffee-info">
+                            <h3>Arellano Espresso</h3>
+                            <p>Rich and bold with notes of dark chocolate and caramel. Our signature espresso blend.</p>
+                            <div class="price">₱295.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="coffee-card">
+                        <img src="https://images.unsplash.com/photo-1561047029-3000c68339ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Cappuccino">
+                        <div class="coffee-info">
+                            <h3>Velvet Cappuccino</h3>
+                            <p>Perfectly balanced with creamy foam and a sprinkle of cocoa on top.</p>
+                            <div class="price">₱325.00</div>
+                        </div>
+                    </div>
+                    
+                    <div class="coffee-card">
+                        <img src="https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Cold Brew">
+                        <div class="coffee-info">
+                            <h3>Cold Brew Delight</h3>
+                            <p>Smooth and refreshing, steeped for 24 hours for maximum flavor.</p>
+                            <div class="price">₱370.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Section -->
+            <div class="about-section">
+                <h2>Our Story</h2>
+                <p>Inspired by the warm and inviting atmosphere of a coffee shop, this website was designed to create a comfortable and enjoyable experience for every visitor. It reflects the calm, creativity, and connection that coffee shops bring to people.</p>
+                <br>
+                <p>This website was created by Group 4 of 11-ICT 4, led by Johnnero Monfero. It is a collaborative project for Computer Programming 3 and 4. This website would not have been possible without our beloved friends, whose guidance and support helped make this coffee shop–inspired website a reality.</p>
+                <br>
+                <p>Visit us today and taste the difference that passion and quality make in every cup.</p>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <div class="footer-content">
+                <div class="logo">
+                    <i class="fas fa-coffee"></i>
+                    <span>Cafe Arellano</span>
+                </div>
+                
+                <p>53 Gen. Kalentong St. | Open Daily 6am-7pm</p>
+                
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                </div>
+                
+                <p class="copyright">&copy; 2026 Cafe Arellano. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <!-- Notification -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const loginPage = document.getElementById('login-page');
+        const homePage = document.getElementById('home-page');
+        const loginForm = document.getElementById('login-form');
+        const loginLogoutBtn = document.getElementById('login-logout-btn');
+        const navHome = document.getElementById('nav-home');
+        const userProfile = document.getElementById('user-profile');
+        const usernameDisplay = document.getElementById('username-display');
+        const notification = document.getElementById('notification');
+        const registerLink = document.getElementById('register-link');
+        const orderNowBtn = document.getElementById('order-now-btn');
+
+        // Demo user data
+        const demoUser = {
+            email: "cafearellano@gmail.com",
+            password: "peta123",
+            username: "Rowell Telewik"
+        };
+
+        // Check if user is already logged in
+        let isLoggedIn = localStorage.getItem('cafeArellanoLoggedIn') === 'true';
+        let currentUser = JSON.parse(localStorage.getItem('cafeArellanoUser')) || null;
+
+        // Initialize the page
+        function initApp() {
+            if (isLoggedIn && currentUser) {
+                showHomePage();
+                updateUIForLoggedInUser();
+            } else {
+                showLoginPage();
+                updateUIForLoggedOutUser();
+            }
+
+            setupEventListeners();
+        }
+
+        // Show login page
+        function showLoginPage() {
+            loginPage.classList.add('active-page');
+            homePage.classList.remove('active-page');
+        }
+
+        // Show home page
+        function showHomePage() {
+            loginPage.classList.remove('active-page');
+            homePage.classList.add('active-page');
+        }
+
+        // Update UI for logged in user
+        function updateUIForLoggedInUser() {
+            loginLogoutBtn.textContent = "Log Out";
+            if (currentUser) {
+                userProfile.style.display = "flex";
+                usernameDisplay.textContent = currentUser.username;
+            }
+        }
+
+        // Update UI for logged out user
+        function updateUIForLoggedOutUser() {
+            loginLogoutBtn.textContent = "Log In";
+            userProfile.style.display = "none";
+        }
+
+        // Show notification
+        function showNotification(message, type = "success") {
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = "block";
+            
+            setTimeout(() => {
+                notification.style.display = "none";
+            }, 3000);
+        }
+
+        // Handle login form submission
+        function handleLogin(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            // Simple validation
+            if (!email || !password) {
+                showNotificationation("Please fill in all fields", "error");
+                return;
+            }
+            
+            // Check credentials (in a real app, this would be a server call)
+            if (email === demoUser.email && password === demoUser.password) {
+                // Successful login
+                isLoggedIn = true;
+                currentUser = { email: email, username: demoUser.username };
+                
+                // Save to localStorage
+                localStorage.setItem('cafeArellanoLoggedIn', 'true');
+                localStorage.setItem('cafeArellanoUser', JSON.stringify(currentUser));
+                
+                showNotification(`Welcome back, ${demoUser.username}!`, "success");
+                showHomePage();
+                updateUIForLoggedInUser();
+            } else {
+                showNotification("Invalid email or password. Try cafearellano@gmail.com / peta123", "error");
+            }
+        }
+
+        // Handle logout
+        function handleLogout() {
+            isLoggedIn = false;
+            currentUser = null;
+            
+            // Clear localStorage
+            localStorage.removeItem('cafeArellanoLoggedIn');
+            localStorage.removeItem('cafeArellanoUser');
+            
+            showNotification("Logged out successfully", "success");
+            showLoginPage();
+            updateUIForLoggedOutUser();
+            
+            // Clear form fields
+            document.getElementById('email').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Login form submission
+            loginForm.addEventListener('submit', handleLogin);
+            
+            // Login/Logout button
+            loginLogoutBtn.addEventListener('click', function() {
+                if (isLoggedIn) {
+                    handleLogout();
+                } else {
+                    showLoginPage();
+                }
+            });
+            
+            // Navigation to home
+            navHome.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isLoggedIn) {
+                    showHomePage();
+                } else {
+                    showNotification("Please log in to access the home page", "error");
+                }
+            });
+            
+            // Register link
+            registerLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                showNotification("Registration feature coming soon! For now, use the demo account.", "success");
+            });
+            
+            // Order now button
+            orderNowBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isLoggedIn) {
+                    showNotification("Order placed successfully! Your coffee will be ready in 5 minutes.", "success");
+                } else {
+                    showNotification("Please log in to place an order", "error");
+                }
+            });
+            
+            // Other navigation links
+            document.getElementById('nav-menu').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isLoggedIn) {
+                    showNotification("Menu page coming soon!", "success");
+                } else {
+                    showNotification("Please log in to view the menu", "error");
+                }
+            });
+            
+            document.getElementById('nav-about').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isLoggedIn) {
+                    // Scroll to about section
+                    document.querySelector('.about-section').scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    showNotification("Please log in to view our story", "error");
+                }
+            });
+            
+            document.getElementById('nav-contact').addEventListener('click', function(e) {
+                e.preventDefault();
+                if (isLoggedIn) {
+                    showNotification("Contact page coming soon! Email us at info@cafearellano.com", "success");
+                } else {
+                    showNotification("Please log in to contact us", "error");
+                }
+            });
+        }
+
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>
